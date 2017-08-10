@@ -1,7 +1,7 @@
 
 sudo: required
 
-language: ruby
+language: generic
 
 services:
 - docker
