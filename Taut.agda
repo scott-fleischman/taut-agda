@@ -25,29 +25,16 @@ data N : Set where
   succ : N → N
 {-# BUILTIN NATURAL N #-}
 
-if_then_else_ : (b t f : Bool) → Bool
-if true then t else _ = t
-if false then _ else f = f
-
-and : (x y : Bool) → Bool
-and x y = if x then y else false
+_∧_ : (x y : Bool) → Bool
+true ∧ y = y
+false ∧ _ = false
 
 F : N → Set
 F z = Bool 
-F (succ x) = Bool → Y
-  where
-  Y = F x
+F (succ x) = Bool → F x
 
-_·_ : {X Y : Set} → (X → Y) → X → Y
-x · y = x y
-
-taut : (n : N) → (F n → Bool)
-taut z = λ f → f
-taut (succ x) = λ f →
-  and
-    (y · (f · true))
-    (y · (f · false))
-  where
-  y = taut x
+taut : (n : N) → F n → Bool
+taut z f = f
+taut (succ x) f = taut x (f true) ∧ taut x (f false)
 
 -- try using C-c C-d to check the type of `taut 0` and `taut 3` from above
